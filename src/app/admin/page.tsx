@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth, signOut } from "@/auth";
 import { ensureAdminAccess, isAdminEmail } from "@/lib/admin-access";
@@ -104,12 +105,12 @@ export default async function AdminPage() {
             Аккаунт <span className="text-white">{email ?? "без email"}</span> не
             является администратором.
           </p>
-          <a
+          <Link
             href="/"
             className="mt-6 inline-block rounded-lg bg-green-500 px-4 py-2 text-sm font-medium text-white"
           >
             На главную
-          </a>
+          </Link>
         </div>
       </div>
     );
