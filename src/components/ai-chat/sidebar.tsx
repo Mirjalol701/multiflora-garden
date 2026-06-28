@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
+import { useSession } from "next-auth/react";
 import {
   Briefcase,
   Brain,
@@ -9,6 +10,7 @@ import {
   Code2,
   FolderOpen,
   Info,
+  LayoutDashboard,
   MessageSquare,
   PanelLeft,
   Plus,
@@ -19,10 +21,11 @@ import {
 import { cn } from "@/lib/utils";
 import { MultiFloraBrandLogo } from "@/components/ai-chat/multiflora-logo";
 import { SidebarUserFooter } from "@/components/auth/user-menu";
+import { isClientAdmin } from "@/lib/admin-client";
 import type { ChatSession } from "@/components/ai-chat/chat-app";
 
 export type SidebarMode = "chat" | "cowork" | "code";
-export type SidebarView = "chat" | "projects" | "artifacts" | "customize" | "memory";
+export type SidebarView = "chat" | "projects" | "artifacts" | "customize" | "memory" | "admin";
 
 const spring = { type: "spring" as const, stiffness: 380, damping: 32 };
 
@@ -81,6 +84,7 @@ type ChatSidebarProps = {
   onNavigateForward: () => void;
   aboutOpen: boolean;
   onOpenAbout: () => void;
+  onOpenAdmin: () => void;
 };
 
 function IconButton({
@@ -183,7 +187,11 @@ export function ChatSidebar({
   onNavigateForward,
   aboutOpen,
   onOpenAbout,
+  onOpenAdmin,
 }: ChatSidebarProps) {
+  const { data: session } = useSession();
+  const isAdmin = isClientAdmin(session?.user);
+
   const openChat = () => {
     onViewChange("chat");
     onNewChat();
@@ -331,6 +339,23 @@ export function ChatSidebar({
                 />
               </motion.div>
             ))}
+            {isAdmin && (
+              <motion.div variants={navItem}>
+                <button
+                  type="button"
+                  onClick={onOpenAdmin}
+                  className={cn(
+                    "relative mt-2 flex w-full items-center gap-2.5 overflow-hidden rounded-lg border px-3 py-2.5 text-[13px] font-semibold transition-colors",
+                    activeView === "admin"
+                      ? "border-green-600 bg-green-600 text-white"
+                      : "border-green-500/40 bg-[#f0fdf4] text-[#15803d] hover:border-green-500 hover:bg-[#dcfce7]"
+                  )}
+                >
+                  <LayoutDashboard className="h-4 w-4 shrink-0" strokeWidth={1.75} />
+                  <span>Админ-панель</span>
+                </button>
+              </motion.div>
+            )}
           </motion.nav>
 
           <div className="mt-4 flex-1 overflow-y-auto px-2">
@@ -375,7 +400,7 @@ export function ChatSidebar({
             </motion.ul>
           </div>
 
-          <SidebarUserFooter />
+          <SidebarUserFooter onOpenAdmin={onOpenAdmin} />
         </motion.aside>
       )}
     </AnimatePresence>

@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { motion } from "framer-motion";
-import { LogOut, User } from "lucide-react";
+import { LogOut, LayoutDashboard, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { isClientAdmin } from "@/lib/admin-client";
 import { cn } from "@/lib/utils";
 
 type UserMenuProps = {
@@ -104,7 +105,7 @@ export function UserMenu({ className, variant = "light" }: UserMenuProps) {
   );
 }
 
-export function SidebarUserFooter() {
+export function SidebarUserFooter({ onOpenAdmin }: { onOpenAdmin?: () => void }) {
   const { data: session, status } = useSession();
 
   if (status === "loading") {
@@ -144,8 +145,22 @@ export function SidebarUserFooter() {
     session.user.email?.charAt(0).toUpperCase() ||
     "U";
 
+  const isAdmin = isClientAdmin(session.user);
+
   return (
     <div className="border-t border-[#e5e7eb] bg-[#f9fafb] p-3">
+      {isAdmin && onOpenAdmin && (
+        <motion.div whileHover={{ y: -1 }} className="mb-2">
+          <button
+            type="button"
+            onClick={onOpenAdmin}
+            className="flex w-full items-center gap-2 rounded-lg border border-[#16a34a]/25 bg-[#f0fdf4] px-3 py-2 text-[12px] font-medium text-[#15803d] transition-colors hover:bg-[#dcfce7]"
+          >
+            <LayoutDashboard className="h-3.5 w-3.5" />
+            Админ-панель
+          </button>
+        </motion.div>
+      )}
       <motion.div
         whileHover={{ y: -2 }}
         transition={{ type: "spring", stiffness: 400, damping: 28 }}

@@ -56,7 +56,8 @@ export default auth(async (req) => {
     !pathname.startsWith("/api/auth") &&
     !pathname.startsWith("/api/public")
   ) {
-    if (!req.auth?.user?.id) {
+    const userId = req.auth?.user?.id ?? req.auth?.user?.email;
+    if (!userId) {
       logSecurityEvent("unauthorized_api_access", {
         ip,
         endpoint: pathname,

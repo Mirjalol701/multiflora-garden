@@ -20,7 +20,21 @@ import { MemoryInbox } from "@/components/ai-chat/memory-inbox";
 import { ArtifactSplitPanel } from "@/components/ai-chat/artifact-split-panel";
 import { OnboardingModal } from "@/components/ai-chat/onboarding-modal";
 import { ContextBar } from "@/components/ai-chat/context-bar";
+import dynamic from "next/dynamic";
 import { CustomizePanel } from "@/components/ai-chat/customize-panel";
+
+const AdminDashboard = dynamic(
+  () =>
+    import("@/components/admin/admin-dashboard").then((m) => m.AdminDashboard),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-full items-center justify-center bg-[#0a0a0a] p-8">
+        <p className="text-[#71717a]">Загрузка админ-панели…</p>
+      </div>
+    ),
+  }
+);
 import { formatGeminiUserError } from "@/lib/ai-errors";
 import { streamAgentReply } from "@/lib/agent-stream";
 import type { AgentSSEEvent } from "@/lib/agent-events";
@@ -110,9 +124,26 @@ export function ChatApp() {
     setOnboardingOpen(!state.onboardingCompleted);
   }, [ready, state.onboardingCompleted]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("view") === "admin") {
+      setAboutOpen(false);
+      setOnboardingOpen(false);
+      setActiveView("admin");
+      window.history.replaceState({}, "", "/");
+    }
+  }, []);
+
+  const handleOpenAdmin = useCallback(() => {
+    setAboutOpen(false);
+    setOnboardingOpen(false);
+    setActiveView("admin");
+  }, []);
+
   const activeChat = chats.find((c) => c.id === activeChatId);
   const hasMessages = (activeChat?.messages.length ?? 0) > 0;
   const isChatView = activeView === "chat";
+  const isAdminView = activeView === "admin";
 
   const syncChat = useCallback(
     (chat: WorkspaceChat) => {
@@ -489,10 +520,17 @@ export function ChatApp() {
         onNavigateForward={handleNavigateForward}
         aboutOpen={aboutOpen}
         onOpenAbout={() => setAboutOpen(true)}
+        onOpenAdmin={handleOpenAdmin}
       />
 
       <div className="flex min-w-0 flex-1">
-        <div className="flex min-w-0 flex-1 flex-col bg-white">
+        <div
+          className={
+            isAdminView
+              ? "flex min-w-0 flex-1 flex-col bg-[#0a0a0a]"
+              : "flex min-w-0 flex-1 flex-col bg-white"
+          }
+        >
           {!sidebarOpen && (
             <div className="relative flex items-center gap-0.5 border-b border-[#e5e7eb] bg-white px-2 py-2">
               <motion.button
@@ -522,18 +560,24 @@ export function ChatApp() {
             <ContextBar onOpenMemory={() => setActiveView("memory")} />
           )}
 
-          <AnimatePresence mode="wait">
-            <motion.main
-              key={mainKey}
-              initial={pageTransition.initial}
-              animate={pageTransition.animate}
-              exit={pageTransition.exit}
-              transition={spring}
-              className="flex-1 overflow-y-auto"
-            >
-              {renderMain()}
-            </motion.main>
-          </AnimatePresence>
+          {isAdminView ? (
+            <main className="flex-1 overflow-y-auto">
+              <AdminDashboard />
+            </main>
+          ) : (
+            <AnimatePresence mode="wait">
+              <motion.main
+                key={mainKey}
+                initial={pageTransition.initial}
+                animate={pageTransition.animate}
+                exit={pageTransition.exit}
+                transition={spring}
+                className="flex-1 overflow-y-auto"
+              >
+                {renderMain()}
+              </motion.main>
+            </AnimatePresence>
+          )}
 
           {isChatView && (
             <ChatInput
@@ -576,7 +620,7 @@ export function ChatApp() {
       <AboutModal open={aboutOpen} onClose={() => setAboutOpen(false)} />
 
       <OnboardingModal
-        open={onboardingOpen}
+        open={onboardingOpen && !isAdminView}
         onComplete={() => setOnboardingOpen(false)}
       />
     </div>

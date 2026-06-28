@@ -28,6 +28,20 @@ const authConfig = {
     authorized() {
       return true;
     },
+    jwt({ token, user }) {
+      if (user?.id) {
+        token.id = user.id;
+      } else if (!token.id && token.sub) {
+        token.id = token.sub;
+      }
+      return token;
+    },
+    session({ session, token }) {
+      if (session.user) {
+        session.user.id = (token.id as string) ?? (token.sub as string);
+      }
+      return session;
+    },
   },
 } satisfies NextAuthConfig;
 

@@ -8,8 +8,9 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isAiLanding = pathname === "/" || pathname?.startsWith("/ai") || pathname?.startsWith("/a/");
   const isAuthPage = pathname === "/login";
+  const isAdminPage = pathname?.startsWith("/admin");
 
-  if (isAiLanding || isAuthPage) {
+  if (isAiLanding || isAuthPage || isAdminPage) {
     return <>{children}</>;
   }
 
