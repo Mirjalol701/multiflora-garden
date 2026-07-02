@@ -65,6 +65,15 @@ export async function getFeaturedPlants(limit = 4): Promise<PlantListItem[]> {
   });
 }
 
+export async function getPlantsForPlanner(): Promise<PlantListItem[]> {
+  return prisma.plant.findMany({
+    where: { stock: { gt: 0 } },
+    select: PLANT_SELECT,
+    orderBy: { price: "asc" },
+    take: 60,
+  });
+}
+
 export async function getPriceRange(): Promise<{ min: number; max: number }> {
   const result = await prisma.plant.aggregate({
     _min: { price: true },

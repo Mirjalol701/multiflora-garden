@@ -7,13 +7,9 @@ import { useSession } from "next-auth/react";
 import { Menu, Phone, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { siteConfig } from "@/config/site";
 
-const navLinks = [
-  { href: "/", label: "Главная" },
-  { href: "/catalog", label: "Каталог" },
-  { href: "/services", label: "Услуги" },
-  { href: "/contacts", label: "Контакты" },
-];
+const navLinks = siteConfig.nav;
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
@@ -62,7 +58,7 @@ export function MobileNav() {
         aria-hidden={!open}
       >
         <div className="flex items-center justify-between border-b border-emerald-100 px-5 py-4">
-          <span className="font-semibold text-emerald-800">Меню</span>
+          <span className="font-semibold text-emerald-800">{siteConfig.ui.menu}</span>
           <Button
             variant="ghost"
             size="icon"
@@ -98,13 +94,13 @@ export function MobileNav() {
         <div className="border-t border-emerald-100 p-4 space-y-3">
           {!session?.user && (
             <Button asChild variant="outline" className="w-full border-emerald-200 text-emerald-800">
-              <Link href="/login">Войти</Link>
+              <Link href="/login">{siteConfig.ui.signIn}</Link>
             </Button>
           )}
           <Button asChild className="w-full bg-emerald-800 hover:bg-emerald-900">
             <Link href="/contacts">
               <Phone className="h-4 w-4" />
-              Заказать консультацию
+              {siteConfig.ui.consultation}
             </Link>
           </Button>
         </div>

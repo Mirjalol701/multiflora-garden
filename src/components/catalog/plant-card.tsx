@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/utils";
+import { siteConfig } from "@/config/site";
 import type { PlantListItem } from "@/types";
 
 type PlantCardProps = {
@@ -40,7 +41,7 @@ export function PlantCard({ plant }: PlantCardProps) {
             className="w-full border-emerald-200 text-emerald-800 transition-colors duration-200 hover:bg-emerald-50 hover:text-emerald-900"
           >
             <Link href="/catalog">
-              Подробнее
+              {siteConfig.ui.details}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>

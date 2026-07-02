@@ -5,32 +5,32 @@ import { Card, CardContent } from "@/components/ui/card";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Контакты",
-  description: `Свяжитесь с ${siteConfig.brand.name}: адрес, телефон, email. Закажите бесплатную консультацию садовника.`,
+  title: siteConfig.ui.contactsTitle,
+  description: `${siteConfig.brand.name}: ${siteConfig.ui.contactsSubtitle}.`,
 };
 
 const contactInfo = [
   {
     icon: Phone,
-    title: "Телефон",
+    title: siteConfig.ui.labelPhone,
     value: siteConfig.contact.phone,
     href: siteConfig.contact.phoneHref,
   },
   {
     icon: Mail,
-    title: "Email",
+    title: siteConfig.ui.labelEmail,
     value: siteConfig.contact.email,
     href: `mailto:${siteConfig.contact.email}`,
   },
   {
     icon: MapPin,
-    title: "Адрес",
+    title: siteConfig.ui.labelAddress,
     value: siteConfig.contact.address,
     href: undefined,
   },
   {
     icon: Clock,
-    title: "Режим работы",
+    title: siteConfig.ui.labelHours,
     value: siteConfig.contact.hoursShort,
     href: undefined,
   },
@@ -40,9 +40,9 @@ export default function ContactsPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Контакты</h1>
+        <h1 className="text-3xl font-bold">{siteConfig.ui.contactsTitle}</h1>
         <p className="mt-1 text-muted-foreground">
-          Мы всегда рады помочь с выбором растений и планированием сада
+          {siteConfig.ui.contactsSubtitle}
         </p>
       </div>
 

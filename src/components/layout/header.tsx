@@ -66,7 +66,7 @@ export function Header() {
           >
             <Link href="/contacts">
               <Phone className="h-4 w-4" />
-              Консультация
+              {siteConfig.ui.consultation}
             </Link>
           </Button>
           <MobileNav />

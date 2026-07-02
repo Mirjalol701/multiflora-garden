@@ -1,14 +1,19 @@
 import type { ToolCall, ToolObservation, ToolSchema } from "@/server/ai/types";
 import { searchMemoryTool } from "./search-memory";
 import { createArtifactTool } from "./create-artifact";
+import { searchPlantsTool } from "./search-plants";
 import type { ToolContext, ZyronTool } from "./types";
 
-const ALL_TOOLS: ZyronTool[] = [searchMemoryTool, createArtifactTool];
+const ALL_TOOLS: ZyronTool[] = [
+  searchMemoryTool,
+  createArtifactTool,
+  searchPlantsTool,
+];
 
 const MODE_TOOLS: Record<string, string[]> = {
-  chat: ["search_memory", "create_artifact"],
-  cowork: ["search_memory", "create_artifact"],
-  code: ["search_memory", "create_artifact"],
+  chat: ["search_memory", "create_artifact", "search_plants"],
+  cowork: ["search_memory", "create_artifact", "search_plants"],
+  code: ["search_memory", "create_artifact", "search_plants"],
 };
 
 export const toolRegistry = {

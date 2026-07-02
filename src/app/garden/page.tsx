@@ -90,11 +90,9 @@ export default async function GardenHomePage() {
         <div className="container mx-auto px-4">
           <div className="mx-auto mb-12 max-w-2xl text-center">
             <h2 className="text-3xl font-bold text-emerald-800 sm:text-4xl">
-              Почему выбирают нас
+              {siteConfig.ui.whyUsTitle}
             </h2>
-            <p className="mt-3 text-stone-600">
-              Сочетаем природную эстетику с профессиональным подходом к каждому проекту
-            </p>
+            <p className="mt-3 text-stone-600">{siteConfig.ui.whyUsSubtitle}</p>
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -121,10 +119,10 @@ export default async function GardenHomePage() {
           <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h2 className="text-3xl font-bold text-emerald-800 sm:text-4xl">
-                Популярные растения
+                {siteConfig.ui.popularPlantsTitle}
               </h2>
               <p className="mt-2 text-stone-600">
-                Лучшие предложения из нашего питомника этой весны
+                {siteConfig.ui.popularPlantsSubtitle}
               </p>
             </div>
             <Button
@@ -133,7 +131,7 @@ export default async function GardenHomePage() {
               className="text-emerald-800 transition-colors duration-200 hover:bg-emerald-50 hover:text-emerald-900"
             >
               <Link href="/catalog">
-                Весь каталог
+                {siteConfig.ui.viewCatalog}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
@@ -148,7 +146,7 @@ export default async function GardenHomePage() {
           ) : (
             <div className="rounded-2xl border border-dashed border-emerald-200 bg-white py-16 text-center">
               <p className="text-stone-600">
-                Каталог скоро будет доступен. Запустите{" "}
+                {siteConfig.ui.catalogEmpty}{" "}
                 <code className="rounded bg-emerald-50 px-1.5 py-0.5 text-sm text-emerald-800">
                   npm run db:seed
                 </code>

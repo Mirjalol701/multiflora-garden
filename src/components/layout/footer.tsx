@@ -24,7 +24,7 @@ export function Footer() {
 
         <div>
           <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-emerald-800">
-            Навигация
+            {siteConfig.ui.footerNav}
           </h3>
           <ul className="space-y-2.5">
             {navLinks.map((link) => (
@@ -42,7 +42,7 @@ export function Footer() {
 
         <div>
           <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-emerald-800">
-            Контакты
+            {siteConfig.ui.footerContacts}
           </h3>
           <ul className="space-y-3 text-sm text-stone-600">
             <li>
@@ -72,20 +72,20 @@ export function Footer() {
 
         <div>
           <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-emerald-800">
-            График работы
+            {siteConfig.ui.footerHours}
           </h3>
           <ul className="space-y-3 text-sm text-stone-600">
             <li className="flex items-start gap-2.5">
               <Clock className="mt-0.5 h-4 w-4 shrink-0 text-emerald-700" />
               <div>
-                <p className="font-medium text-stone-700">Пн – Пт</p>
+                <p className="font-medium text-stone-700">{siteConfig.ui.weekdays}</p>
                 <p>{siteConfig.contact.hoursWeekday}</p>
               </div>
             </li>
             <li className="flex items-start gap-2.5">
               <Clock className="mt-0.5 h-4 w-4 shrink-0 text-emerald-700" />
               <div>
-                <p className="font-medium text-stone-700">Сб – Вс</p>
+                <p className="font-medium text-stone-700">{siteConfig.ui.weekend}</p>
                 <p>{siteConfig.contact.hoursWeekend}</p>
               </div>
             </li>
@@ -94,7 +94,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-emerald-100 py-5 text-center text-xs text-stone-500">
-        © {new Date().getFullYear()} {siteConfig.brand.name}. Все права защищены.
+        © {new Date().getFullYear()} {siteConfig.brand.name}. {siteConfig.ui.rightsReserved}
       </div>
     </footer>
   );

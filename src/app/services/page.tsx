@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { getServices } from "@/actions/services";
 import { ServiceCard } from "@/components/services/service-card";
+import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Услуги",
-  description:
-    "Ландшафтный дизайн, уход за садом, консультации садовника и доставка растений от MultiFlora Garden.",
+  title: siteConfig.ui.servicesTitle,
+  description: `${siteConfig.ui.servicesTitle} — ${siteConfig.brand.name}. ${siteConfig.ui.servicesSubtitle}.`,
 };
 
 export const revalidate = 60;
@@ -16,9 +16,9 @@ export default async function ServicesPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Наши услуги</h1>
+        <h1 className="text-3xl font-bold">{siteConfig.ui.servicesTitle}</h1>
         <p className="mt-1 text-muted-foreground">
-          Профессиональный уход за вашим садом и зелёными зонами
+          {siteConfig.ui.servicesSubtitle}
         </p>
       </div>
 

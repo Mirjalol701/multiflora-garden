@@ -44,8 +44,7 @@ export async function runAgent(
   }
 
   const { provider, config } = modelRouter.forZyron();
-  const tools =
-    input.mode === "chat" ? [] : toolRegistry.getSchemas(input.mode);
+  const tools = toolRegistry.getSchemas(input.mode);
 
   let messages: AgentMessage[] = [...ctx.recentMessages];
   const last = messages[messages.length - 1];
