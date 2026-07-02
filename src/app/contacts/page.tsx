@@ -2,36 +2,36 @@ import type { Metadata } from "next";
 import { Mail, MapPin, Phone, Clock } from "lucide-react";
 import { CallbackForm } from "@/components/forms/CallbackForm";
 import { Card, CardContent } from "@/components/ui/card";
+import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
   title: "Контакты",
-  description:
-    "Свяжитесь с MultiFlora Garden: адрес питомника, телефон, email. Закажите бесплатную консультацию садовника.",
+  description: `Свяжитесь с ${siteConfig.brand.name}: адрес, телефон, email. Закажите бесплатную консультацию садовника.`,
 };
 
 const contactInfo = [
   {
     icon: Phone,
     title: "Телефон",
-    value: "+7 (495) 123-45-67",
-    href: "tel:+74951234567",
+    value: siteConfig.contact.phone,
+    href: siteConfig.contact.phoneHref,
   },
   {
     icon: Mail,
     title: "Email",
-    value: "info@multiflora.ru",
-    href: "mailto:info@multiflora.ru",
+    value: siteConfig.contact.email,
+    href: `mailto:${siteConfig.contact.email}`,
   },
   {
     icon: MapPin,
     title: "Адрес",
-    value: "Москва, Садовое кольцо, 1",
+    value: siteConfig.contact.address,
     href: undefined,
   },
   {
     icon: Clock,
     title: "Режим работы",
-    value: "Пн–Вс: 9:00 – 20:00",
+    value: siteConfig.contact.hoursShort,
     href: undefined,
   },
 ];

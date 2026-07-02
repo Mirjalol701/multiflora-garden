@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { siteConfig } from "@/config/site";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -7,9 +8,9 @@ export function cn(...inputs: ClassValue[]) {
 
 export function formatPrice(price: number | string): string {
   const num = typeof price === "string" ? parseFloat(price) : price;
-  return new Intl.NumberFormat("ru-RU", {
+  return new Intl.NumberFormat(siteConfig.locale.lang, {
     style: "currency",
-    currency: "RUB",
+    currency: siteConfig.locale.currency,
     maximumFractionDigits: 0,
   }).format(num);
 }

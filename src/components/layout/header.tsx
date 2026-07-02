@@ -7,13 +7,9 @@ import { Button } from "@/components/ui/button";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { UserMenu } from "@/components/auth/user-menu";
 import { cn } from "@/lib/utils";
+import { siteConfig } from "@/config/site";
 
-const navLinks = [
-  { href: "/garden", label: "Главная" },
-  { href: "/catalog", label: "Каталог" },
-  { href: "/services", label: "Услуги" },
-  { href: "/contacts", label: "Контакты" },
-];
+const navLinks = siteConfig.nav;
 
 export function Header() {
   const pathname = usePathname();
@@ -30,10 +26,10 @@ export function Header() {
           </span>
           <div className="leading-tight">
             <span className="block text-base font-bold tracking-tight text-emerald-800 lg:text-lg">
-              MultiFlora Garden
+              {siteConfig.brand.name}
             </span>
             <span className="hidden text-[11px] font-medium text-stone-500 sm:block">
-              Питомник & ландшафт
+              {siteConfig.brand.tagline}
             </span>
           </div>
         </Link>

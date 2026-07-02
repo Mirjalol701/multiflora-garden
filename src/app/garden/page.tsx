@@ -7,48 +7,37 @@ import {
   ShieldCheck,
   Sprout,
   Truck,
+  type LucideIcon,
 } from "lucide-react";
 import { getFeaturedPlants } from "@/actions/plants";
 import { PlantCard } from "@/components/catalog/plant-card";
 import { Button } from "@/components/ui/button";
+import { siteConfig } from "@/config/site";
 
 export const revalidate = 60;
 
-const features = [
-  {
-    icon: ShieldCheck,
-    title: "Гарантия приживаемости",
-    description:
-      "Каждое растение сопровождаем рекомендациями по уходу и гарантией на посадочный материал.",
-  },
-  {
-    icon: Sprout,
-    title: "Собственный питомник",
-    description:
-      "Выращиваем саженцы на собственной базе — только здоровые и адаптированные экземпляры.",
-  },
-  {
-    icon: Palette,
-    title: "Ландшафтный дизайн",
-    description:
-      "Проектируем сады с учётом рельефа, освещения и вашего стиля жизни.",
-  },
-  {
-    icon: Truck,
-    title: "Доставка и посадка",
-    description:
-      "Аккуратно доставляем и высаживаем растения с соблюдением агротехники.",
-  },
-];
+const featureIcons: Record<string, LucideIcon> = {
+  ShieldCheck,
+  Sprout,
+  Palette,
+  Truck,
+  Leaf,
+};
+
+const features = siteConfig.features.map((feature) => ({
+  ...feature,
+  Icon: featureIcons[feature.icon] ?? Leaf,
+}));
 
 export default async function GardenHomePage() {
   const plants = await getFeaturedPlants(4);
+  const { hero } = siteConfig;
 
   return (
     <>
       <section className="relative min-h-[85vh] overflow-hidden">
         <Image
-          src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1920&q=85"
+          src={hero.image}
           alt="Пышный сад с зелёными растениями и цветами"
           fill
           priority
@@ -61,17 +50,16 @@ export default async function GardenHomePage() {
           <div className="max-w-2xl space-y-8">
             <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-medium text-emerald-50 backdrop-blur-sm">
               <Leaf className="h-4 w-4" />
-              Premium Nature — с 2010 года
+              {hero.badge}
             </span>
 
             <h1 className="text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-              Ландшафтный дизайн и растения,{" "}
-              <span className="text-emerald-200">которые преображают пространство</span>
+              {hero.titleLead}{" "}
+              <span className="text-emerald-200">{hero.titleAccent}</span>
             </h1>
 
             <p className="max-w-xl text-lg leading-relaxed text-emerald-50/90">
-              MultiFlora Garden — питомник и студия ландшафтного дизайна. Создаём
-              сады, которые радуют круглый год: от идеи до посадки и ухода.
+              {hero.subtitle}
             </p>
 
             <div className="flex flex-wrap gap-4">
@@ -80,8 +68,8 @@ export default async function GardenHomePage() {
                 size="lg"
                 className="bg-emerald-600 text-white shadow-lg transition-all duration-300 hover:bg-emerald-500 hover:shadow-xl"
               >
-                <Link href="/catalog">
-                  В каталог
+                <Link href={hero.primaryCta.href}>
+                  {hero.primaryCta.label}
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
@@ -91,7 +79,7 @@ export default async function GardenHomePage() {
                 variant="outline"
                 className="border-white/40 bg-white/10 text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/20 hover:text-white"
               >
-                <Link href="/services">Заказать дизайн</Link>
+                <Link href={hero.secondaryCta.href}>{hero.secondaryCta.label}</Link>
               </Button>
             </div>
           </div>
@@ -116,7 +104,7 @@ export default async function GardenHomePage() {
                 className="group rounded-2xl border border-emerald-100 bg-stone-50/50 p-6 transition-all duration-300 hover:border-emerald-200 hover:bg-white hover:shadow-md"
               >
                 <span className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 text-emerald-800 transition-colors duration-300 group-hover:bg-emerald-800 group-hover:text-white">
-                  <feature.icon className="h-6 w-6" aria-hidden />
+                  <feature.Icon className="h-6 w-6" aria-hidden />
                 </span>
                 <h3 className="font-semibold text-emerald-800">{feature.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-stone-600">

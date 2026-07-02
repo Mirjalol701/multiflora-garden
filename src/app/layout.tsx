@@ -5,6 +5,7 @@ import { AuthSessionProvider } from "@/components/providers/session-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { SiteJsonLd } from "@/components/seo/site-json-ld";
 import { getSiteUrl } from "@/lib/site-url";
+import { siteConfig, titleTemplate } from "@/config/site";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -21,28 +22,32 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
-  applicationName: "MultiFlora Garden",
+  applicationName: siteConfig.brand.name,
   title: {
-    default: "MultiFlora Garden — Питомник растений и ландшафтный дизайн",
-    template: "%s | MultiFlora Garden",
+    default: siteConfig.seo.titleDefault,
+    template: titleTemplate(),
   },
-  description:
-    "Питомник растений MultiFlora Garden: каталог комнатных и садовых растений, ландшафтный дизайн, уход за садом. Доставка по Москве и области.",
-  keywords: ["растения", "питомник", "ландшафтный дизайн", "сад", "MultiFlora Garden"],
+  description: siteConfig.seo.description,
+  keywords: [...siteConfig.seo.keywords],
   icons: {
     icon: [
-      { url: "/multiflora-logo.png", type: "image/png", sizes: "512x512" },
-      { url: "/multiflora-logo.svg", type: "image/svg+xml" },
+      { url: siteConfig.brand.logo, type: "image/png", sizes: "512x512" },
+      { url: siteConfig.brand.logoFallback, type: "image/svg+xml" },
     ],
-    apple: "/multiflora-logo.png",
-    shortcut: "/multiflora-logo.png",
+    apple: siteConfig.brand.logo,
+    shortcut: siteConfig.brand.logo,
   },
   openGraph: {
     type: "website",
-    locale: "ru_RU",
-    siteName: "MultiFlora Garden",
+    locale: siteConfig.locale.ogLocale,
+    siteName: siteConfig.brand.name,
     images: [
-      { url: "/multiflora-logo.png", width: 512, height: 512, alt: "MultiFlora Garden" },
+      {
+        url: siteConfig.brand.logo,
+        width: 512,
+        height: 512,
+        alt: siteConfig.brand.name,
+      },
     ],
   },
   robots: {
@@ -57,7 +62,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru">
+    <html lang={siteConfig.locale.lang.split("-")[0]}>
       <body className={`${geistSans.variable} ${geistMono.variable} font-sans`}>
         <SiteJsonLd />
         <AuthSessionProvider>

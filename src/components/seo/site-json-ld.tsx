@@ -1,23 +1,26 @@
 import { getSiteUrl } from "@/lib/site-url";
+import { siteConfig } from "@/config/site";
 
 export function SiteJsonLd() {
   const siteUrl = getSiteUrl();
-  const logoUrl = `${siteUrl}/multiflora-logo.png`;
+  const logoUrl = `${siteUrl}${siteConfig.brand.logo}`;
 
   const data = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "WebSite",
-        name: "MultiFlora Garden",
-        alternateName: ["MultiFlora AI", "MultiFlora"],
+        name: siteConfig.brand.name,
+        alternateName: [siteConfig.brand.shortName],
         url: siteUrl,
       },
       {
         "@type": "Organization",
-        name: "MultiFlora Garden",
+        name: siteConfig.brand.name,
         url: siteUrl,
         logo: logoUrl,
+        email: siteConfig.contact.email,
+        telephone: siteConfig.contact.phone,
       },
     ],
   };
