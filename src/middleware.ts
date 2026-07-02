@@ -1,14 +1,10 @@
-import NextAuth from "next-auth";
-import { NextResponse } from "next/server";
-import authConfig from "@/auth.config";
+import { NextResponse, type NextRequest } from "next/server";
 import {
   applyMiddlewareRateLimit,
   getClientIpFromRequest,
   resolveMiddlewareLimitTier,
 } from "@/lib/rate-limit";
 import { logSecurityEvent } from "@/lib/security-logger";
-
-const { auth } = NextAuth(authConfig);
 
 const SECURITY_HEADERS: Record<string, string> = {
   "Content-Security-Policy":
@@ -27,7 +23,12 @@ function withSecurityHeaders(response: NextResponse): NextResponse {
   return response;
 }
 
-export default auth(async (req) => {
+/**
+ * Edge middleware: rate limits + security headers only.
+ * Auth is enforced in route handlers (Node runtime) — NextAuth JWT decode on Edge
+ * can crash with CompressionStream errors on Vercel for logged-in users.
+ */
+export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const ip = getClientIpFromRequest(req);
 
@@ -35,7 +36,6 @@ export default auth(async (req) => {
     return withSecurityHeaders(NextResponse.next());
   }
 
-  // Layer 1: IP rate limit BEFORE auth (see RATE_LIMITS in @/lib/rate-limit)
   const limitTier = resolveMiddlewareLimitTier(pathname);
   if (limitTier) {
     const rateLimitResponse = await applyMiddlewareRateLimit(req, limitTier);
@@ -50,30 +50,8 @@ export default auth(async (req) => {
     }
   }
 
-  // STEP 2: Auth check (after rate limit)
-  if (
-    pathname.startsWith("/api/") &&
-    !pathname.startsWith("/api/auth") &&
-    !pathname.startsWith("/api/public")
-  ) {
-    const userId = req.auth?.user?.id ?? req.auth?.user?.email;
-    if (!userId) {
-      logSecurityEvent("unauthorized_api_access", {
-        ip,
-        endpoint: pathname,
-        method: req.method,
-      });
-      return withSecurityHeaders(
-        NextResponse.json(
-          { error: "Unauthorized", message: "Authentication required" },
-          { status: 401 }
-        )
-      );
-    }
-  }
-
   return withSecurityHeaders(NextResponse.next());
-});
+}
 
 export const config = {
   matcher: [

@@ -61,8 +61,16 @@ export async function streamAgentReply(
   if (!response.ok) {
     let message = "Не удалось получить ответ от Zyron";
     try {
-      const data = (await response.json()) as { error?: string };
-      if (data.error) message = data.error;
+      const raw = await response.text();
+      try {
+        const data = JSON.parse(raw) as { error?: string; message?: string };
+        message = data.error ?? data.message ?? message;
+      } catch {
+        const snippet = raw.replace(/\s+/g, " ").trim().slice(0, 200);
+        message = snippet
+          ? `Ошибка сервера (${response.status}): ${snippet}`
+          : `Ошибка сервера (${response.status})`;
+      }
     } catch {
       message = `Ошибка сервера (${response.status})`;
     }
