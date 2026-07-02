@@ -30,15 +30,20 @@ export const metadata: Metadata = {
     "Питомник растений MultiFlora Garden: каталог комнатных и садовых растений, ландшафтный дизайн, уход за садом. Доставка по Москве и области.",
   keywords: ["растения", "питомник", "ландшафтный дизайн", "сад", "MultiFlora Garden"],
   icons: {
-    icon: [{ url: "/multiflora-logo.svg", type: "image/svg+xml" }],
-    apple: "/multiflora-logo.svg",
-    shortcut: "/multiflora-logo.svg",
+    icon: [
+      { url: "/multiflora-logo.png", type: "image/png", sizes: "512x512" },
+      { url: "/multiflora-logo.svg", type: "image/svg+xml" },
+    ],
+    apple: "/multiflora-logo.png",
+    shortcut: "/multiflora-logo.png",
   },
   openGraph: {
     type: "website",
     locale: "ru_RU",
     siteName: "MultiFlora Garden",
-    images: [{ url: "/multiflora-logo.svg", width: 400, height: 400, alt: "MultiFlora Garden" }],
+    images: [
+      { url: "/multiflora-logo.png", width: 512, height: 512, alt: "MultiFlora Garden" },
+    ],
   },
   robots: {
     index: true,

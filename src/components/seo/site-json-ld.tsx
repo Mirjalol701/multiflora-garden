@@ -2,7 +2,7 @@ import { getSiteUrl } from "@/lib/site-url";
 
 export function SiteJsonLd() {
   const siteUrl = getSiteUrl();
-  const logoUrl = `${siteUrl}/multiflora-logo.svg`;
+  const logoUrl = `${siteUrl}/multiflora-logo.png`;
 
   const data = {
     "@context": "https://schema.org",
