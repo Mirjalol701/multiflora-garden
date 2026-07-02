@@ -9,7 +9,7 @@ const run = (c) => {
 
 const message =
   process.argv[2] ||
-  "Add EN localization, AI gardener with catalog access, and photo-to-plan feature";
+  "Localize AI chat welcome/sidebar/input to garden-expert theme (RU/EN)";
 
 run("git add -A");
 run(`git commit -m "${message}"`);

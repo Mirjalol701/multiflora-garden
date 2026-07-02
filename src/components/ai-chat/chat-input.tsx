@@ -12,6 +12,7 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { siteConfig } from "@/config/site";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import {
@@ -346,7 +347,7 @@ export function ChatInput({
 
             <div className="flex shrink-0 items-center gap-1.5 pb-1">
               <span className="rounded-lg px-2 py-1.5 text-[11px] font-medium text-[#15803d]">
-                Zyron
+                {siteConfig.brand.shortName}
               </span>
 
               <motion.button
@@ -372,8 +373,7 @@ export function ChatInput({
       </div>
 
       <p className="mx-auto mt-3 max-w-3xl text-center text-[11px] text-[#6b7280]">
-        <span className="hidden sm:inline">Enter — отправить · Shift+Enter — новая строка · </span>
-        Zyron может ошибаться. Проверяйте важную информацию.
+        {siteConfig.chat.disclaimer}
       </p>
     </div>
   );

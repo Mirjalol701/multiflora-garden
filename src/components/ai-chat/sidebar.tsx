@@ -20,6 +20,7 @@ import {
   Wand2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { siteConfig } from "@/config/site";
 import { MultiFloraBrandLogo } from "@/components/ai-chat/multiflora-logo";
 import { SidebarUserFooter } from "@/components/auth/user-menu";
 import { isClientAdmin } from "@/lib/admin-client";
@@ -247,10 +248,10 @@ export function ChatSidebar({
             <MultiFloraBrandLogo size="sm" className="shadow-sm" />
             <div className="min-w-0">
               <span className="block text-[15px] font-bold tracking-tight text-[#111827]">
-                MultiFlora <span className="font-semibold text-[#6b7280]">AI</span>
+                {siteConfig.brand.name}
               </span>
               <span className="block text-[10px] tracking-wide text-[#6b7280]">
-                powered by Mirjalol
+                {siteConfig.brand.tagline}
               </span>
             </div>
           </motion.div>

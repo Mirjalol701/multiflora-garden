@@ -1,9 +1,21 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Bot, Code2, MessageSquare, Sparkles, Wand2, type LucideIcon } from "lucide-react";
+import { Leaf, Sprout, Sun, Flower2, type LucideIcon } from "lucide-react";
 import { MultiFloraBrandLogo } from "@/components/ai-chat/multiflora-logo";
+import { siteConfig } from "@/config/site";
 import type { SidebarMode } from "@/components/ai-chat/sidebar";
+
+const SUGGESTION_ICONS: LucideIcon[] = [Leaf, Sprout, Sun, Flower2];
+
+const chatConfig = {
+  heading: siteConfig.chat.heading,
+  subtitle: siteConfig.chat.subtitle,
+  suggestions: siteConfig.chat.suggestions.map((text, i) => ({
+    text,
+    icon: SUGGESTION_ICONS[i % SUGGESTION_ICONS.length],
+  })),
+};
 
 const modeConfig: Record<
   SidebarMode,
@@ -13,36 +25,9 @@ const modeConfig: Record<
     suggestions: { text: string; icon: LucideIcon }[];
   }
 > = {
-  chat: {
-    heading: "Чем займёмся?",
-    subtitle: "AI operating system — думаю в контексте ваших проектов, памяти и артефактов.",
-    suggestions: [
-      { text: "Помоги написать деловое письмо", icon: MessageSquare },
-      { text: "Объясни сложную тему простыми словами", icon: Bot },
-      { text: "Составь план проекта на неделю", icon: Sparkles },
-      { text: "Придумай идеи для нового продукта", icon: Wand2 },
-    ],
-  },
-  cowork: {
-    heading: "Чем займёмся?",
-    subtitle: "Режим Cowork — стратегия, решения, trade-offs. Думаю как cofounder.",
-    suggestions: [
-      { text: "Составить бизнес-план для стартапа", icon: Sparkles },
-      { text: "Разобрать сложную проблему по шагам", icon: Bot },
-      { text: "Подготовить презентацию для клиента", icon: MessageSquare },
-      { text: "Написать техническое задание", icon: Wand2 },
-    ],
-  },
-  code: {
-    heading: "Чем займёмся?",
-    subtitle: "Режим Code — архитектура, код, execution. Инженерный уровень точности.",
-    suggestions: [
-      { text: "Напиши REST API на Python", icon: Code2 },
-      { text: "Исправь ошибку в моём коде", icon: Bot },
-      { text: "Объясни этот алгоритм", icon: MessageSquare },
-      { text: "Создай компонент React с TypeScript", icon: Sparkles },
-    ],
-  },
+  chat: chatConfig,
+  cowork: chatConfig,
+  code: chatConfig,
 };
 
 const spring = { type: "spring" as const, stiffness: 300, damping: 28 };

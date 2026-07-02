@@ -74,6 +74,12 @@ type LocaleContent = {
   };
   features: SiteFeature[];
   footerAbout: string;
+  chat: {
+    heading: string;
+    subtitle: string;
+    suggestions: string[];
+    disclaimer: string;
+  };
   ui: {
     menu: string;
     signIn: string;
@@ -185,6 +191,18 @@ const CONTENT: Record<Locale, LocaleContent> = {
     ],
     footerAbout:
       "Создаём гармоничные зелёные пространства — от AI-подбора растений до ландшафтного дизайна под ключ.",
+    chat: {
+      heading: "Чем помочь с садом?",
+      subtitle:
+        "Я — AI-садовник. Подбираю растения из каталога, советую по уходу и помогаю спланировать сад.",
+      suggestions: [
+        "Что посадить в тени вдоль забора?",
+        "Подбери неприхотливые растения до 3000 ₽",
+        "Как ухаживать за туей зимой?",
+        "Составь план клумбы для солнечного участка",
+      ],
+      disclaimer: "AI-садовник может ошибаться. Уточняйте важное у наших специалистов.",
+    },
     ui: {
       menu: "Меню",
       signIn: "Войти",
@@ -302,6 +320,19 @@ const CONTENT: Record<Locale, LocaleContent> = {
     ],
     footerAbout:
       "We create harmonious green spaces — from AI plant selection to turnkey landscape design.",
+    chat: {
+      heading: "How can I help with your garden?",
+      subtitle:
+        "I'm your AI gardener. I pick plants from the catalog, advise on care, and help you plan your garden.",
+      suggestions: [
+        "What can I plant in shade along a fence?",
+        "Suggest low-maintenance plants under €40",
+        "How do I care for a thuja in winter?",
+        "Design a flower bed for a sunny spot",
+      ],
+      disclaimer:
+        "The AI gardener can make mistakes. Please double-check important details with our team.",
+    },
     ui: {
       menu: "Menu",
       signIn: "Sign in",
@@ -408,6 +439,7 @@ export const siteConfig = {
   hero: content.hero,
   features: content.features,
   footerAbout: content.footerAbout,
+  chat: content.chat,
   ui: content.ui,
 } as const;
 
