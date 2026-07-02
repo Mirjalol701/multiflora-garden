@@ -16,6 +16,7 @@ import { AboutModal } from "@/components/ai-chat/about-modal";
 import { MainHeader } from "@/components/ai-chat/main-header";
 import { ProjectsPanel } from "@/components/ai-chat/projects-panel";
 import { ArtifactsPanel } from "@/components/ai-chat/artifacts-panel";
+import { GenerationPanel } from "@/components/ai-chat/generation-panel";
 import { MemoryInbox } from "@/components/ai-chat/memory-inbox";
 import { ArtifactSplitPanel } from "@/components/ai-chat/artifact-split-panel";
 import { OnboardingModal } from "@/components/ai-chat/onboarding-modal";
@@ -470,6 +471,9 @@ export function ChatApp() {
           }}
         />
       );
+    }
+    if (activeView === "generation") {
+      return <GenerationPanel />;
     }
     if (activeView === "memory") {
       return <MemoryInbox />;

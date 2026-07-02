@@ -21,7 +21,7 @@ type ToolPanelProps = {
 };
 
 const panels: Record<
-  Exclude<SidebarView, "chat" | "memory" | "admin">,
+  Exclude<SidebarView, "chat" | "memory" | "admin" | "generation">,
   {
     title: string;
     description: string;
@@ -63,7 +63,13 @@ const modeLabels: Record<SidebarMode, string> = {
 };
 
 export function ToolPanel({ view, mode, onNewChat, onOpenCustomize }: ToolPanelProps) {
-  if (view === "chat" || view === "memory" || view === "admin") return null;
+  if (
+    view === "chat" ||
+    view === "memory" ||
+    view === "admin" ||
+    view === "generation"
+  )
+    return null;
 
   const panel = panels[view];
   const Icon = panel.icon;

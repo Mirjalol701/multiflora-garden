@@ -11,6 +11,7 @@ import {
   FolderOpen,
   Info,
   LayoutDashboard,
+  Clapperboard,
   MessageSquare,
   PanelLeft,
   Plus,
@@ -25,7 +26,14 @@ import { isClientAdmin } from "@/lib/admin-client";
 import type { ChatSession } from "@/components/ai-chat/chat-app";
 
 export type SidebarMode = "chat" | "cowork" | "code";
-export type SidebarView = "chat" | "projects" | "artifacts" | "customize" | "memory" | "admin";
+export type SidebarView =
+  | "chat"
+  | "generation"
+  | "projects"
+  | "artifacts"
+  | "customize"
+  | "memory"
+  | "admin";
 
 const spring = { type: "spring" as const, stiffness: 380, damping: 32 };
 
@@ -36,6 +44,7 @@ const modes: { id: SidebarMode; label: string; icon: typeof MessageSquare }[] = 
 ];
 
 const toolsBeforeAbout: { id: SidebarView; label: string; icon: typeof Plus }[] = [
+  { id: "generation", label: "Генерация видео", icon: Clapperboard },
   { id: "projects", label: "Projects", icon: FolderOpen },
   { id: "artifacts", label: "Artifacts", icon: Shapes },
 ];
