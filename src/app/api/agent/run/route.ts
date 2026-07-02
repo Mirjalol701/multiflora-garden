@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { agentRunBodySchema, type AgentRunBody } from "@/lib/validations";
 import { applyHandlerRateLimit, getClientIpFromRequest } from "@/lib/rate-limit";
-import { sanitizeAiPrompt } from "@/lib/sanitize";
+import { sanitizeAiPrompt } from "@/lib/sanitize-ai-prompt";
 import { logSecurityEvent } from "@/lib/security-logger";
 import { runAgent } from "@/server/agent/orchestrator";
 import type { AgentRunInput, WorkspaceSnapshot } from "@/server/agent/types";
@@ -22,7 +22,8 @@ export async function POST(request: Request) {
   }
 }
 
-export const maxDuration = 120;
+export const runtime = "nodejs";
+export const maxDuration = 60;
 
 function toWorkspaceSnapshot(workspace: AgentRunBody["workspace"]): WorkspaceSnapshot {
   return {
@@ -35,7 +36,19 @@ function toWorkspaceSnapshot(workspace: AgentRunBody["workspace"]): WorkspaceSna
 }
 
 async function handleAgentRun(request: Request) {
-  const session = await auth();
+  let session;
+  try {
+    session = await auth();
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Ошибка авторизации";
+    console.error("[agent/run] auth failed:", message);
+    return Response.json(
+      { error: "Ошибка сессии. Выйдите и войдите снова." },
+      { status: 401 }
+    );
+  }
+
   const ip = getClientIpFromRequest(request);
 
   if (!session?.user?.id) {

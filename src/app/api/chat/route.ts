@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { formatGeminiUserError } from "@/lib/ai-errors";
 import { prisma } from "@/lib/prisma";
 import { applyHandlerRateLimit, getClientIpFromRequest } from "@/lib/rate-limit";
-import { sanitizeAiPrompt } from "@/lib/sanitize";
+import { sanitizeAiPrompt } from "@/lib/sanitize-ai-prompt";
 import { logSecurityEvent } from "@/lib/security-logger";
 import {
   buildMultifloraSystemPrompt,

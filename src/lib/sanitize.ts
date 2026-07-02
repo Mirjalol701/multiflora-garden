@@ -68,7 +68,7 @@ export function sanitizeMarkdown(input: string): string {
   );
 }
 
-/** Sanitize user content before sending to AI APIs. */
+/** @deprecated Use `@/lib/sanitize-ai-prompt` in API routes (Vercel-safe). */
 export function sanitizeAiPrompt(input: string): string {
   return sanitizeMarkdown(input).slice(0, 32_000);
 }

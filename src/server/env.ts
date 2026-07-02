@@ -77,8 +77,13 @@ function bootstrapEnv(): void {
   envBootstrapped = true;
 }
 
-/** Read server env — prefers .env file over stale process.env (Next.js dev quirk). */
+/** Read server env — on Vercel use process.env; locally prefer .env file. */
 export function getServerEnv(name: string): string | undefined {
+  if (process.env.VERCEL || process.env.NODE_ENV === "production") {
+    const fromProcess = process.env[name]?.trim();
+    return fromProcess || undefined;
+  }
+
   bootstrapEnv();
 
   const fromFile = readEnvFile(name);
