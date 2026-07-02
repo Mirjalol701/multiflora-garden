@@ -24,7 +24,7 @@ export type ToolObservation = {
 };
 
 export type ModelConfig = {
-  provider: "gemini" | "openai" | "anthropic";
+  provider: "openai" | "anthropic";
   model: string;
   temperature?: number;
   maxTokens?: number;

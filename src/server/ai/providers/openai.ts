@@ -4,6 +4,8 @@ import type { AIProvider, StreamChunk, ToolCall, ToolSchema } from "../types";
 
 const OPENAI_BASE = "https://api.openai.com/v1";
 const DEFAULT_MODEL = "gpt-4.1-mini";
+/** Matches pgvector column in prisma/migrations (vector 768). */
+export const OPENAI_EMBED_DIM = 768;
 
 type OpenAIContentPart =
   | { type: "text"; text: string }
@@ -236,6 +238,7 @@ export const openaiProvider: AIProvider = {
     const response = await openaiFetch("/embeddings", {
       model: "text-embedding-3-small",
       input: text.slice(0, 8000),
+      dimensions: OPENAI_EMBED_DIM,
     });
 
     const data = (await response.json()) as {

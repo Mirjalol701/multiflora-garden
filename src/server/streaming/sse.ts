@@ -1,6 +1,5 @@
-import { formatGeminiUserError } from "@/lib/ai-errors";
+import { formatAiUserError } from "@/lib/ai-errors";
 import type { AgentSSEEvent } from "@/lib/agent-events";
-import { GeminiApiError } from "@/server/ai/gemini-errors";
 
 /**
  * Creates a ReadableStream that emits Server-Sent Events.
@@ -25,11 +24,9 @@ export function createAgentSSEStream(
         controller.close();
       } catch (error) {
         const message =
-          error instanceof GeminiApiError
-            ? error.userMessage
-            : error instanceof Error
-              ? formatGeminiUserError(error.message)
-              : "Внутренняя ошибка агента";
+          error instanceof Error
+            ? formatAiUserError(error.message)
+            : "Внутренняя ошибка агента";
         controller.enqueue(
           encoder.encode(
             `data: ${JSON.stringify({ type: "error", message })}\n\n`

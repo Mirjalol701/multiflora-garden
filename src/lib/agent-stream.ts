@@ -1,5 +1,5 @@
 import type { AgentSSEEvent } from "@/lib/agent-events";
-import { formatGeminiUserError } from "@/lib/ai-errors";
+import { formatAiUserError } from "@/lib/ai-errors";
 import type { AiWorkspaceContext } from "@/lib/zyron-prompt";
 import type { WorkspaceSnapshot } from "@/server/agent/types";
 
@@ -104,7 +104,7 @@ export async function streamAgentReply(
         const event = JSON.parse(payload) as AgentSSEEvent;
 
         if (event.type === "error") {
-          throw new Error(formatGeminiUserError(event.message));
+          throw new Error(formatAiUserError(event.message));
         }
 
         if (event.type === "text_delta") {

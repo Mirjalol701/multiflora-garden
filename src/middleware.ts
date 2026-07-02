@@ -8,7 +8,7 @@ import { logSecurityEvent } from "@/lib/security-logger";
 
 const SECURITY_HEADERS: Record<string, string> = {
   "Content-Security-Policy":
-    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://generativelanguage.googleapis.com https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com",
+    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com",
   "X-Frame-Options": "DENY",
   "X-Content-Type-Options": "nosniff",
   "Strict-Transport-Security": "max-age=31536000; includeSubDomains",

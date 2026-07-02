@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { assembleContext } from "./context-assembler";
 import { postProcessRun } from "./post-processor";
-import { classifyQuery, buildSearchQuery } from "./query-classifier";
+import { classifyQuery } from "./query-classifier";
 import { wantsImageGeneration, cleanImageUserMessage } from "@/lib/image-intent";
 import { formatImageError } from "@/lib/ai-errors";
 import { generateImageFromRequest } from "@/server/ai/image-service";
@@ -14,7 +14,6 @@ import type {
 import { buildZyronSystemPrompt } from "@/lib/zyron-prompt";
 import { modelRouter } from "@/server/ai/router";
 import { toolRegistry } from "@/server/tools/registry";
-import { formatWebHits, searchWeb } from "@/server/tools/web-search";
 import type { ToolCall } from "@/server/ai/types";
 
 const MAX_TOOL_ITERATIONS = 6;
@@ -29,30 +28,12 @@ export async function runAgent(
   const ctx = await assembleContext(input);
   const classification = classifyQuery(input.message);
 
-  let webSearchResults = "";
-  if (classification.needsWebSearch && process.env.TAVILY_API_KEY?.trim()) {
-    emit({ type: "phase", phase: "tool_calling" });
-    emit({
-      type: "tool_start",
-      tool: "web_search",
-      args: { query: input.message },
-    });
-    try {
-      const hits = await searchWeb(buildSearchQuery(input.message, classification));
-      webSearchResults = formatWebHits(hits);
-      emit({
-        type: "tool_result",
-        tool: "web_search",
-        summary: `Found ${hits.length} results`,
-      });
-    } catch {
-      emit({
-        type: "tool_result",
-        tool: "web_search",
-        summary: "Search failed — using model knowledge",
-      });
-    }
-  }
+  const systemPrompt = buildZyronSystemPrompt({
+    projectInstructions: ctx.projectInstructions,
+    queryHint: classification.needsWebSearch
+      ? `${classification.hint} Answer from model knowledge; note uncertainty for live data (weather, time, news).`
+      : classification.hint,
+  });
 
   if (ctx.vectorMemoriesRaw.length > 0) {
     emit({
@@ -61,11 +42,6 @@ export async function runAgent(
       previews: ctx.vectorMemoriesRaw.map((m) => m.content.slice(0, 120)),
     });
   }
-
-  const systemPrompt = buildZyronSystemPrompt({
-    webSearchResults: webSearchResults || undefined,
-    projectInstructions: ctx.projectInstructions,
-  });
 
   const { provider, config } = modelRouter.forZyron();
   const tools =
@@ -77,7 +53,7 @@ export async function runAgent(
     messages.push({ role: "user", content: input.message });
   }
 
-  let toolCallsCount = webSearchResults ? 1 : 0;
+  let toolCallsCount = 0;
   let iterations = 0;
 
   await prisma.agentRun

@@ -79,7 +79,7 @@ export function formatImageError(error: unknown): string {
 }
 
 /** User-facing message — never dump raw API JSON */
-export function formatGeminiUserError(raw: string, status?: number): string {
+export function formatAiUserError(raw: string, status?: number): string {
   const msg = extractApiErrorMessage(raw);
 
   if (isQuotaError(msg, status)) {
@@ -87,14 +87,11 @@ export function formatGeminiUserError(raw: string, status?: number): string {
     const wait = retry
       ? ` Подождите ~${retry} сек. и попробуйте снова.`
       : " Подождите 30–60 сек. и попробуйте снова.";
-    return (
-      "Лимит запросов AI." +
-      wait
-    );
+    return "Лимит запросов AI." + wait;
   }
 
   if (status === 401 || status === 403 || msg.toLowerCase().includes("api key")) {
-    return "Неверный или просроченный API-ключ. Проверьте OPENAI_API_KEY / GEMINI_API_KEY в .env.";
+    return "Неверный или просроченный API-ключ. Проверьте OPENAI_API_KEY в .env.";
   }
 
   if (msg.length > 280) {
@@ -103,3 +100,6 @@ export function formatGeminiUserError(raw: string, status?: number): string {
 
   return msg;
 }
+
+/** @deprecated Use formatAiUserError */
+export const formatGeminiUserError = formatAiUserError;

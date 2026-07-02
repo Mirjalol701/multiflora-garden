@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { modelRouter } from "@/server/ai/router";
-import { GEMINI_EMBED_DIM } from "@/server/ai/providers/gemini";
+import { openaiProvider, OPENAI_EMBED_DIM } from "@/server/ai/providers/openai";
 import type { VectorMemoryHit } from "@/server/agent/types";
 
 const EMBED_CACHE = new Map<string, number[]>();
@@ -10,8 +9,7 @@ export async function embedText(text: string): Promise<number[]> {
   const cached = EMBED_CACHE.get(key);
   if (cached) return cached;
 
-  const provider = modelRouter.forExtraction();
-  const vector = await provider.embed(text);
+  const vector = await openaiProvider.embed(text);
   EMBED_CACHE.set(key, vector);
   return vector;
 }
@@ -142,4 +140,4 @@ export async function fallbackTextSearch(params: {
   }));
 }
 
-export { GEMINI_EMBED_DIM };
+export { OPENAI_EMBED_DIM };

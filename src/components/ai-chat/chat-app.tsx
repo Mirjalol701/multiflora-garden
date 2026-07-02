@@ -35,7 +35,7 @@ const AdminDashboard = dynamic(
     ),
   }
 );
-import { formatGeminiUserError } from "@/lib/ai-errors";
+import { formatAiUserError } from "@/lib/ai-errors";
 import { streamAgentReply } from "@/lib/agent-stream";
 import type { AgentSSEEvent } from "@/lib/agent-events";
 import {
@@ -320,7 +320,7 @@ export function ChatApp() {
           error instanceof Error
             ? error.message
             : "Не удалось получить ответ от AI.";
-        const errorText = `⚠️ ${formatGeminiUserError(raw)}`;
+        const errorText = `⚠️ ${formatAiUserError(raw)}`;
         syncChat({
           id: chatId,
           title: chatTitle,
